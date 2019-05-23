@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-const baseUrl = "http://localhost:3000/api/v1/"
+const baseUrl = "https://wordwatch-api.herokuapp.com/api/v1/"
 
 $(document).ready(() => {
   document.getElementsByTagName("button")[0].addEventListener("click", function() {
@@ -21,6 +21,8 @@ function populateTopWord() {
 }
 
 function submitWords() {
+  let topWordCount = document.getElementsByClassName("word-count")[0];
+  topWordCount.innerHTML = `<p>Processing your submission...</p>`
   let textArea = document.getElementsByTagName("textarea")[0]
   let userText = textArea.value
   textArea.value = ""
