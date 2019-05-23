@@ -82,8 +82,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(() => {
-  // have fun!
+  populateTopWord();
 })
+
+function populateTopWord() {
+  let topWordCount = document.getElementsByClass("word-count")[0];
+  fetch("http://localhost:3000/api/v1/top_word")
+  .then(response => response.json())
+  .then(function(result) {
+    word = Object.getOwnPropertyNames(result)[0]
+    frequency = result.word[word]
+    newTopWord = document.createElement('p')
+    newTopWord.innerHTML = `${word}! ${word} has occured ${frequency} times.`
+    topWordCount.innerHTML = newTopWord
+  })
+}
 
 
 /***/ }),
