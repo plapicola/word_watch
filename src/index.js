@@ -18,6 +18,9 @@ function populateTopWord() {
     let frequency = result.word[word]
     topWordCount.innerHTML = `<p>🔥${word}! ${word} has occured ${frequency} times.🔥</p>`
   })
+  .catch(error => {
+    topWordCount.innerHTML = `<p>😥Couldn't determine top word.😥</p>`
+  })
 }
 
 function submitWords() {
