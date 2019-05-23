@@ -81,20 +81,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 
 
+const baseUrl = "https://wordwatch-api.herokuapp.com/api/v1/"
+
 __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(() => {
+  document.getElementsByTagName("button")[0].addEventListener("click", function() {
+    submitWords();
+  });
   populateTopWord();
 })
 
 function populateTopWord() {
-  let topWordCount = document.getElementsByClass("word-count")[0];
-  fetch("http://localhost:3000/api/v1/top_word")
+  let topWordCount = document.getElementsByClassName("word-count")[0];
+  fetch(`${baseUrl}/top_word`)
   .then(response => response.json())
   .then(function(result) {
-    word = Object.getOwnPropertyNames(result)[0]
-    frequency = result.word[word]
-    newTopWord = document.createElement('p')
-    newTopWord.innerHTML = `${word}! ${word} has occured ${frequency} times.`
-    topWordCount.innerHTML = newTopWord
+    let word = Object.getOwnPropertyNames(result.word)[0]
+    let frequency = result.word[word]
+    topWordCount.innerHTML = `<p>${word}! ${word} has occured ${frequency} times.</p>`
+  })
+}
+
+function submitWords() {
+  let topWordCount = document.getElementsByClassName("word-count")[0];
+  topWordCount.innerHTML = `<p>Processing your submission...</p>`
+  let textArea = document.getElementsByTagName("textarea")[0]
+  let userText = textArea.value.replace(/[^a-zA-Z0-9- ]/gi, "")
+  textArea.value = ""
+  Promise.all(userText.split(" ").map(function(word) {
+    return sendOneWord(word);
+  }))
+  .then(() => populateTopWord())
+  .catch(() => alert("Unable to populate word"))
+}
+
+function sendOneWord(word) {
+  return new Promise((resolve, reject) => {
+    fetch(`${baseUrl}/words`, {
+      method: "POST",
+      headers: {
+            'Content-Type': 'application/json'
+        },
+      body: JSON.stringify({
+        word: {
+          value: word
+        }
+      })
+    })
+    .then(response => response.json())
+    .then(result => resolve(result))
+    .catch(error => reject(error))
   })
 }
 
