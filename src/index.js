@@ -16,7 +16,7 @@ function populateTopWord() {
   .then(function(result) {
     let word = Object.getOwnPropertyNames(result.word)[0]
     let frequency = result.word[word]
-    topWordCount.innerHTML = `<p>${word}! ${word} has occured ${frequency} times.</p>`
+    topWordCount.innerHTML = `<p>🔥${word}! ${word} has occured ${frequency} times.🔥</p>`
   })
 }
 
