@@ -24,7 +24,7 @@ function submitWords() {
   let topWordCount = document.getElementsByClassName("word-count")[0];
   topWordCount.innerHTML = `<p>Processing your submission...</p>`
   let textArea = document.getElementsByTagName("textarea")[0]
-  let userText = textArea.value
+  let userText = textArea.value.replace(/[^a-zA-Z0-9- ]/gi, "")
   textArea.value = ""
   Promise.all(userText.split(" ").map(function(word) {
     return sendOneWord(word);
